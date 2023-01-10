@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  guacd:
+    image: guacamole/guacd
+    volumes:
+      - guacamole-config:/etc/guacamole
+  mysql:
+    build:
+      dockerfile: mysql.dockerfile
+    volumes:
+      - mysql_data_volume:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+  guacamole:
+    image: guacamole/guacamole
+    ports:
+      - "8080:8080"
+    links:
+      - guacd
+      - mysql
+    volumes:
+      - guacamole-config:/etc/guacamole
+    environment:
+      - GUACD_HOSTNAME=guacd
+      - MYSQL_HOSTNAME=mysql
+      - MYSQL_DATABASE=guacamole_db # If you want to update mysql database/user/pass, update the initdb.sql and run docker compose build
+      - MYSQL_USER=guacamole_user
+      - MYSQL_PASSWORD=password
+  kde_desktop:
+    build:
+      dockerfile: kde_desktop.dockerfile
+    ports:
+      - "5900:5900"
+volumes:
+  guacamole-config:
+  mysql_data_volume:
+  # kde_desktop_volume:
