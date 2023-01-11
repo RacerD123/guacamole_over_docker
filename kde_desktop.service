@@ -1,0 +1,9 @@
+[Unit]
+Description=VNC KDE Plasma Desktop Service
+After=graphical.target
+
+[Service]
+ExecStart=/kde_desktop_entrypoint.sh
+
+[Install]
+WantedBy=default.target

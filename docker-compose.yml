@@ -10,7 +10,7 @@ services:
     volumes:
       - mysql_data_volume:/var/lib/mysql
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
   guacamole:
     image: guacamole/guacamole
     ports:
@@ -27,10 +27,11 @@ services:
       - MYSQL_USER=guacamole_user
       - MYSQL_PASSWORD=password
   kde_desktop:
+    privileged: true
     build:
       dockerfile: kde_desktop.dockerfile
     ports:
-      - "5900:5900"
+      - "5900:5900" #TODO: Remove this?
 volumes:
   guacamole-config:
   mysql_data_volume:
